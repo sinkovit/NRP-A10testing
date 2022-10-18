@@ -1,3 +1,0 @@
-kubectl delete configmap icecube-nrp-script
-
-kubectl create configmap icecube-nrp-script -n reliability-testing --from-file=run_test.sh --from-file=run_benchmark.sh
