@@ -1,0 +1,8 @@
+kubectl create -n reliability-testing -f unifrac_nrp_50k.yaml
+kubectl create -n reliability-testing -f unifrac_nrp_300k_serial.yaml
+kubectl create -n reliability-testing -f unifrac_nrp_300k_8.yaml
+# optional
+kubectl create -n reliability-testing -f unifrac_nrp_50k_wn.yaml
+
+# Following is a duplicate
+#kubectl create -n reliability-testing -f unifrac_nrp_300k_8.yaml

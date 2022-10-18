@@ -1,0 +1,65 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unifrac-nrp-300ks
+spec:
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.product
+                operator: In
+                values:
+                - NVIDIA-A10
+              - key: env
+                operator: In
+                values:
+                - nrp
+      tolerations:
+      - effect: NoSchedule
+        key:  nautilus.io/nrp-testing
+        operator: Exists
+      containers:
+      - name: test
+        image: sfiligoi/unifrac
+        command:
+        - "/bin/bash"
+        args:
+        - "-l"
+        - "-c"
+        - "source /root/run_300k_small.sh"
+        resources:
+          limits:
+            memory: 64Gi
+            cpu: "8"
+            nvidia.com/gpu: "1"
+            ephemeral-storage: 40Gi
+          requests:
+            memory: 48Gi
+            cpu: "6"
+            nvidia.com/gpu: "1"
+            ephemeral-storage: 30Gi
+        volumeMounts:
+        - name: unifrac-nrp-script
+          mountPath: /root/run_300k_small.sh
+          subPath: run_300k_small.sh
+        - name: unifrac-nrp-script2
+          mountPath: /root/run_300k_support.sh
+          subPath: run_300k_support.sh
+      restartPolicy: Never
+      volumes:
+      - name: unifrac-nrp-script
+        configMap:
+          items:
+          - key: run_300k_small.sh
+            path: run_300k_small.sh
+          name: unifrac-nrp-script
+      - name: unifrac-nrp-script2
+        configMap:
+          items:
+          - key: run_300k_support.sh
+            path: run_300k_support.sh
+          name: unifrac-nrp-script

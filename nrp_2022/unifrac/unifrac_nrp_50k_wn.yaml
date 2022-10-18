@@ -1,0 +1,68 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unifrac-nrp-50k-wn
+spec:
+  completions: 10
+  parallelism: 10
+  backoffLimit: 0
+  template:
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: nvidia.com/gpu.product
+                operator: In
+                values:
+                - NVIDIA-A10
+              - key: env
+                operator: In
+                values:
+                - nrp
+      tolerations:
+      - effect: NoSchedule
+        key:  nautilus.io/nrp-testing
+        operator: Exists
+      containers:
+      - name: test
+        image: sfiligoi/unifrac
+        command:
+        - "/bin/bash"
+        args:
+        - "-l"
+        - "-c"
+        - "source /root/run_50k_wn.sh"
+        env:
+        - name: POD_NAME_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NODE_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          limits:
+            memory: 32Gi
+            cpu: "4"
+            nvidia.com/gpu: "1"
+            ephemeral-storage: 10Gi
+          requests:
+            memory: 32Gi
+            cpu: "4"
+            nvidia.com/gpu: "1"
+            ephemeral-storage: 10Gi
+        volumeMounts:
+        - name: unifrac-nrp-script
+          mountPath: /root/run_50k_wn.sh
+          subPath: run_50k_wn.sh
+      restartPolicy: Never
+      volumes:
+      - name: unifrac-nrp-script
+        configMap:
+          items:
+          - key: run_50k_wn.sh
+            path: run_50k_wn.sh
+          name: unifrac-nrp-script

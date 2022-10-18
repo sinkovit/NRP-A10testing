@@ -1,0 +1,3 @@
+kubectl delete configmap unifrac-nrp-script
+
+kubectl create configmap unifrac-nrp-script -n reliability-testing --from-file=run_50k.sh --from-file=run_50k_wn.sh --from-file=run_300k.sh --from-file=run_300k_8.sh --from-file=run_300k_support.sh --from-file=run_300k_small.sh --from-file=run_300k_small_8.sh
