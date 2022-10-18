@@ -1,0 +1,3 @@
+kubectl delete configmap rose-nrp-script
+
+kubectl create configmap rose-nrp-script -n reliability-testing --from-file=run_test.sh

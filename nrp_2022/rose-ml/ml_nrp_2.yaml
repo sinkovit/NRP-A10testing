@@ -3,6 +3,9 @@ kind: Job
 metadata:
   name: rose-ml-nrp-test2
 spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 0
   template:
     spec:
       affinity:
@@ -31,9 +34,18 @@ spec:
         - "-l"
         - "-c"
         - "source /home/jovyan/run_test.sh"
+        env:
+        - name: POD_NAME_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NODE_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         resources:
           limits:
-            memory: 512Gi
+            memory: 480Gi
             cpu: "64"
             nvidia.com/gpu: 2
             ephemeral-storage: 800Gi

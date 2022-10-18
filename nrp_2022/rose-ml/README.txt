@@ -11,3 +11,7 @@ Retrieve results
 ================
 kubectl get pods -n isfiligoi -o wide |grep rose-ml-nrp
 kubectl logs -n isfiligoi <rose-ml-nrp-*>
+
+Notes on test cases
+===================
+Original memory limit was 512Gi, reduced to 480Gi for A10s
