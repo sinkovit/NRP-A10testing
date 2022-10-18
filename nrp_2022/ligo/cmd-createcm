@@ -1,0 +1,3 @@
+kubectl delete configmap ligo-nrp-script
+
+kubectl create configmap ligo-nrp-script -n reliability-testing --from-file=run_test.sh

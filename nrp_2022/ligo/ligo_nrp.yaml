@@ -3,6 +3,9 @@ kind: Job
 metadata:
   name: ligo-nrp-test
 spec:
+  completions: 1
+  parallelism: 1
+  backoffLimit: 0
   template:
     spec:
       affinity:
@@ -30,6 +33,15 @@ spec:
         args:
         - "-c"
         - "source /root/run_test.sh"
+        env:
+        - name: POD_NAME_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NODE_HOSTNAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
         resources:
           limits:
             memory: 16Gi
