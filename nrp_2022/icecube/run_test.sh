@@ -1,4 +1,6 @@
 #!/bin/bash
+echo ${POD_NODE_HOSTNAME}
+echo "======================================="
 nvidia-smi -L
 echo "======================================="
 lscpu
