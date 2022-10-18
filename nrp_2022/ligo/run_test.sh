@@ -33,4 +33,4 @@ wait
 t2=`date +%s`
 echo "NRP TEST End: `date +%s`"
 let dt=$t2-$t1
-echo "Elapsed time for 3 parallel jobs: $dt"
+echo "Elapsed time for 6 parallel jobs: $dt"
